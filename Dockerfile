@@ -8,6 +8,6 @@ RUN pip install --upgrade pip \
     && pip install poetry --no-cache-dir
 
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-root
+    && poetry install --no-root --without dev
 
 COPY . .
