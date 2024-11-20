@@ -1,13 +1,13 @@
 from langchain_core.prompts import PromptTemplate
 
 grader_prompt = PromptTemplate(
-    template="""You are a grader assessing whether an answer is grounded in / supported by a set of facts. \n
+    template="""You are a grader assessing whether an answer is grounded in / supported by a set of facts.\n
         Here are the facts:
         \n ------- \n
         {documents}
         \n ------- \n
         Here is the answer: {generation}
-        Give a binary score 'yes' or 'no' score to indicate whether the answer is grounded in / supported by a set of facts. \n
+        Give a binary score 'yes' or 'no' score to indicate whether the answer is grounded in / supported by a set of facts.\n
         Provide the binary score as a JSON with a single key 'score' and no preamble or explanation.""",
     input_variables=["generation", "documents"],
 )
@@ -38,7 +38,7 @@ check_question_prompt = PromptTemplate(
 
 answer_prompt = PromptTemplate(
     template="""You are a helpful assistant providing accurate and context-aware answers. 
-        Use the provided context to answer the user's question. Be concise and precise. 
+        Use the provided context to answer the user's question. 
         Respond in the same language as the question.
     
         Context:
@@ -53,6 +53,6 @@ answer_prompt = PromptTemplate(
 )
 
 simple_question = PromptTemplate(
-    template="""f"Question: {question}\n\nProvide a short and direct answer to the user question.""",
+    template="Question: {question}\n\nProvide a short and direct answer to the user question.",
     input_variables=["question"]
 )

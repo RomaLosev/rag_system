@@ -19,7 +19,7 @@ class Container(containers.DeclarativeContainer):
         ChatOllama,
         model="gemma2",
         base_url=str(settings.ollama_base_url),
-        temperature=0.5,
+        temperature=0.2,
     )
     embeddings_open_ai = providers.Singleton(
         AzureOpenAIEmbeddings,
@@ -32,7 +32,7 @@ class Container(containers.DeclarativeContainer):
         model="gpt-4o-mini",
         api_version=settings.azure_openai_api_version,
         azure_endpoint=str(settings.azure_openai_endpoint),
-        temperature=0.5,
+        temperature=0.2,
     )
     vector_store = providers.Singleton(
         VectorStore,
