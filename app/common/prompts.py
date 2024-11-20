@@ -14,10 +14,15 @@ grader_prompt = PromptTemplate(
 
 
 re_write_prompt = PromptTemplate(
-    template="""You a question re-writer that converts an input question to a better version that is optimized \n
-         for vectorstore retrieval. Look at the initial and formulate an improved question. \n
-         Here is the initial question: \n\n {question}. Improved question with no preamble: \n """,
-    input_variables=["generation", "question"],
+    template="""You are a question re-writer that converts an input question to a better version optimized 
+        for vectorstore retrieval. Ensure the language of the rewritten question is the same as the original question.
+        
+        Here is the initial question:
+        {question}
+        
+        Improved question with no preamble:
+        """,
+    input_variables=["question"],
 )
 
 check_question_prompt = PromptTemplate(
