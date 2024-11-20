@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_DEBUG=true
+    volumes:
+      - ollama:/root/.ollama
+
+  rag_system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    command: sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
+    environment:
+      - AZURE_OPENAI_API_KEY=C4Y3yXBLiPXgiob01bBHRjtGJeJxPZ1o7kfRa4vg8pdFummgX7iiJQQJ99AKACYeBjFXJ3w3AAABACOGG9cZ
+      - AZURE_OPENAI_ENDPOINT=https://chat-model-rag-prototype.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-08-01-preview,
+      - AZURE_DOCS_LOADER_KEY=Fdouk5Xhd2MhVWOvXLiGT3f0z7duJLNT6BljQaDypO75xoMnXtehJQQJ99AKACYeBjFXJ3w3AAALACOGRbOO
+      - AZURE_DOCS_LOADER_ENDPOINT=https://docs-recognizer-01.cognitiveservices.azure.com/
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - AZURE_OPENAI_API_VERSION=2024-08-01-preview
+    depends_on:
+      - ollama
+    volumes:
+      - ./data:/app/data
+
+
+volumes:
+  ollama:
