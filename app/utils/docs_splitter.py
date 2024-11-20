@@ -10,11 +10,11 @@ def split_docx(
     file_path: Path, output_path: Path, max_paragraphs=10
 ) -> Generator[Path]:
     """
-    Разделяет документ Word на части по заданному количеству параграфов.
+    Split .docx document by 'max_paragraphs'.
     """
     input_file = Path(file_path)
     if not input_file.exists():
-        msg = f"Файл {file_path} не найден."
+        msg = f"File {file_path} not found."
         raise FileNotFoundError(msg)
     if not str(file_path).endswith(".docx"):
         msg = f"Файл {file_path} должен быть формата .docx."
@@ -45,6 +45,9 @@ def split_docx(
 
 
 def split_xlsx(file_path: Path, output_dir: Path) -> Generator[Path]:
+    """
+    Split .xlsx document by pages.
+    """
     workbook = openpyxl.load_workbook(file_path)
     output_dir.mkdir(parents=True, exist_ok=True)
     for sheet_name in workbook.sheetnames:
