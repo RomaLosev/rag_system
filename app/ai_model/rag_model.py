@@ -20,8 +20,6 @@ class RagModel:
     async def get_response(self, message: str) -> str:
         if not message.strip():
             return ""
-        if message.lower() in ("привет", "здравствуйте", "hi", "hello"):
-            return "Здравствуйте! Чем могу помочь?"
         complexity = await self.check_question(message)
         if complexity == "simple":
             logger.debug("Handling as a simple question.")

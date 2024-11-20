@@ -19,7 +19,7 @@ class AppSettings(BaseSettings):
     azure_openai_endpoint: AnyHttpUrl = Field(default=...)
     azure_openai_api_key: str = Field(default=...)
     azure_openai_api_version: str = Field(default="2024-08-01-preview")
-    ollama_base_url: AnyHttpUrl = Field(default="http://ollama:11434")
+    ollama_base_url: AnyHttpUrl = Field(default="http://192.168.31.192:11434")
 
     @field_validator("docs_path", mode="before")
     def validate_and_create_directory(cls, value):  # noqa:N805
