@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "rag-system"
+version = "0.1.0"
+description = ""
+authors = ["romanlosev <losik19-94@yandex.ru>"]
+license = ""
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.9.2"
+pydantic-settings = "^2.6.1"
+langchain = "^0.3.7"
+langchain-community = "^0.3.7"
+langchain-chroma = "^0.1.4"
+azure-ai-documentintelligence = "^1.0.0b4"
+loguru = "^0.7.2"
+langchain-ollama = "^0.2.0"
+langchain-core = "^0.3.19"
+faiss-cpu = "^1.9.0"
+python-docx = "^1.1.2"
+fastapi = "^0.115.5"
+orjson = "^3.10.11"
+openpyxl = "^3.1.5"
+dependency-injector = "^4.43.0"
+openai = "^1.54.5"
+langchain-openai = "^0.2.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.6"
+
+[tool.ruff]
+cache-dir = "/tmp/ruff-cache/"
+extend-exclude = ["*/migrations/*", "prompts.py"]
+fix = true
+line-length = 88
+unsafe-fixes = true
+
+[tool.ruff.lint.per-file-ignores]
+"*/schemas/*.py" = ["N805", "N815"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "C", "I", "N", "ASYNC", "A", "EM", "T20", "PYI", "RET", "ARG"]
+ignore = ["D1", "D203", "D213", "FA102", "ANN101"]
+
+[tool.ruff.lint.isort]
+no-lines-before = ["standard-library", "local-folder"]
+known-local-folder = ["src"]

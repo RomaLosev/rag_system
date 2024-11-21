@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_DEBUG=true
+    volumes:
+      - ollama:/root/.ollama
+
+  rag_system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    command: sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
+    env_file:
+      - .env
+    depends_on:
+      - ollama
+    volumes:
+      - ./data:/app/data
+
+
+volumes:
+  ollama:
