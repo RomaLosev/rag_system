@@ -37,7 +37,7 @@ def create_app():
         default_response_class=ORJSONResponse,
         debug=settings.debug,
     )
-    app.add_middleware(
+    fastapi_app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
         allow_credentials=True,
