@@ -14,15 +14,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8001:8001"
-    command: sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
     env_file:
       - .env
     depends_on:
       - ollama
     volumes:
       - ./data:/app/data
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    ports:
+      - "443:443"
+    command: >
+      uvicorn app.main:app --host 0.0.0.0 --port 443
+      --ssl-keyfile /etc/letsencrypt/live/rag-prototype.eastus2.cloudapp.azure.com/privkey.pem
+      --ssl-certfile /etc/letsencrypt/live/rag-prototype.eastus2.cloudapp.azure.com/fullchain.pem
 
 
 volumes:
