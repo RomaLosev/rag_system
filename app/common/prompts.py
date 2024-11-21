@@ -36,24 +36,33 @@ check_question_prompt = PromptTemplate(
     input_variables=["question"],
 )
 
-
 answer_prompt = PromptTemplate(
-    template="""You are a helpful assistant providing accurate and context-aware answers. 
-        Use the provided context to answer the user's question. 
-        Respond in the same language as the question.
-    
+    template="""You are a helpful and detailed assistant providing structured, accurate, and context-aware answers. 
+        Use the provided context to thoroughly answer the user's question. Ensure your response is detailed, well-structured, and divided into sections.
+        Include examples, specific details, and references to the context where applicable. 
+
+        Important! Always respond in the **exact same language as the question**. For example, if the question is in Russian, respond in Russian. 
+
         Context:
         {context}
-    
+
         Question:
         {question}
-    
+
         Answer:
+
+        [Provide a clear and concise definition or explanation.]
+
+        1. [Aspect 1 with details and examples.]
+        2. [Aspect 2 with explanation and relevance.]
+        3. [Aspect 3 if applicable.]
+
+        [Summarize the key points and their significance.]
         """,
     input_variables=["context", "question"],
 )
 
 simple_question = PromptTemplate(
-    template="Question: {question}\n\nProvide a short and direct answer to the user question.",
+    template="Respond in the same language as the question. Question: {question}\n\nProvide a short and direct answer to the user question.",
     input_variables=["question"]
 )

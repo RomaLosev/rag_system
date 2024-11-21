@@ -4,7 +4,8 @@ from fastapi.websockets import WebSocket
 
 from app.ai_model.rag_model import RagModel
 from app.dependencies.containers import Container
-from app.handlers.chat_handler import ChatRagHandler
+from app.handlers.chat_handler import ChatRagHandler, ChatRagSimpleHandler
+from app.schemas.requests import ChatRequest
 
 chat_router = APIRouter(prefix="/chat", tags=["Chat"])
 
@@ -32,3 +33,13 @@ async def chat_with_gemma(
 ):
     async with ChatRagHandler(websocket=websocket, chat_model=llm) as ws_chat:
         await ws_chat.chat()
+
+
+@chat_router.post("")
+@inject
+async def get_answer(
+    request: ChatRequest,
+    llm: RagModel = Depends(Provide[Container.rag_model]),
+):
+    handler = ChatRagSimpleHandler(chat_model=llm)
+    return await handler.get_answer(message=request.query)

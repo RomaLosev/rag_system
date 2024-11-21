@@ -20,3 +20,11 @@ class ChatRagHandler(WebSocketManager):
             answer = await self.bot.get_response(message)
             if answer:
                 await self.ws_send_text(answer)
+
+
+class ChatRagSimpleHandler:
+    def __init__(self, chat_model: RagModel):
+        self.bot = chat_model
+
+    async def get_answer(self, message: str):
+        return await self.bot.get_response(message)

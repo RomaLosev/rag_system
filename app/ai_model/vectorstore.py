@@ -58,3 +58,12 @@ class VectorStore:
             )
             logger.info("FAISS index loaded from local file.")
         return vectorstore
+
+    async def create_embeddings(self, message: str) -> list[float]:
+        return await self.embeddings.aembed_query(message)
+
+    async def vector_search(self, message: str) -> list[Document]:
+        embedding = await self.create_embeddings(message)
+        return await self.vector_store.amax_marginal_relevance_search_by_vector(
+            embedding=embedding
+        )

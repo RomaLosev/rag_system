@@ -8,7 +8,6 @@ from app.common.prompts import (
     answer_prompt,
     check_question_prompt,
     re_write_prompt,
-    simple_question,
 )
 
 
@@ -20,13 +19,6 @@ class RagModel:
     async def get_response(self, message: str) -> str:
         if not message.strip():
             return ""
-        complexity = await self.check_question(message)
-        if complexity == "simple":
-            logger.debug("Handling as a simple question.")
-            simple_answer = await self.llm.ainvoke(
-                simple_question.format_prompt(question=message)
-            )
-            return simple_answer.content.strip()
         rewritten_question = await self.rewrite_question(message)
         context = await self.search_vectorstore(rewritten_question)
         return await self.generate_answer(message, context)
@@ -54,11 +46,11 @@ class RagModel:
 
     async def search_vectorstore(self, question: str) -> str:
         """Search for context in vector store."""
-        results = await self.vector_store.vector_store.asimilarity_search(question, k=3)
+        results = await self.vector_store.vector_search(question)
         logger.debug(results)
         if not results:
             return ""
-        return "\n".join([doc.page_content for doc in results])
+        return "\n\n".join([doc.page_content for doc in results])
 
     async def generate_answer(self, question: str, context: str) -> str:
         """Generate answer using context."""
