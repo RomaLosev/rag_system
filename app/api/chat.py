@@ -1,10 +1,11 @@
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends
+from fastapi.responses import StreamingResponse
 from fastapi.websockets import WebSocket
 
 from app.ai_model.rag_model import RagModel
 from app.dependencies.containers import Container
-from app.handlers.chat_handler import ChatRagHandler, ChatRagSimpleHandler
+from app.handlers.chat_handler import ChatRagHandler, ChatRagStreamingHandler
 from app.schemas.requests import ChatRequest
 
 chat_router = APIRouter(prefix="/chat", tags=["Chat"])
@@ -41,5 +42,9 @@ async def get_answer(
     request: ChatRequest,
     llm: RagModel = Depends(Provide[Container.rag_model]),
 ):
-    handler = ChatRagSimpleHandler(chat_model=llm)
-    return await handler.get_answer(message=request.query)
+    async def generate_response():
+        handler = ChatRagStreamingHandler(chat_model=llm)
+        async for chunk in handler.get_answer(message=request.query):
+            yield chunk
+
+    return StreamingResponse(generate_response())

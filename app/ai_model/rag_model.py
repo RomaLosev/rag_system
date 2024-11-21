@@ -1,4 +1,5 @@
 import json
+from collections.abc import AsyncGenerator
 
 from langchain_core.language_models import BaseChatModel
 from loguru import logger
@@ -22,6 +23,15 @@ class RagModel:
         rewritten_question = await self.rewrite_question(message)
         context = await self.search_vectorstore(rewritten_question)
         return await self.generate_answer(message, context)
+
+    async def get_stream_response(self, message: str) -> AsyncGenerator[str]:
+        if not message.strip():
+            yield ""
+            return
+        rewritten_question = await self.rewrite_question(message)
+        context = await self.search_vectorstore(rewritten_question)
+        async for chunk in self.generate_answer_streaming(message, context):
+            yield chunk
 
     async def check_question(self, question: str) -> str:
         """Check the complexity of the question."""
@@ -58,3 +68,12 @@ class RagModel:
             answer_prompt.format_prompt(question=question, context=context)
         )
         return answer.content.strip()
+
+    async def generate_answer_streaming(
+        self, question: str, context: str
+    ) -> AsyncGenerator[str]:
+        """Generate streaming answer."""
+        async for chunk in self.llm.astream(
+            answer_prompt.format_prompt(question=question, context=context)
+        ):
+            yield chunk.content

@@ -22,9 +22,10 @@ class ChatRagHandler(WebSocketManager):
                 await self.ws_send_text(answer)
 
 
-class ChatRagSimpleHandler:
+class ChatRagStreamingHandler:
     def __init__(self, chat_model: RagModel):
         self.bot = chat_model
 
     async def get_answer(self, message: str):
-        return await self.bot.get_response(message)
+        async for chunk in self.bot.get_stream_response(message):
+            yield chunk
