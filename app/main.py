@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 from app.api.chat import chat_router
@@ -35,6 +36,13 @@ def create_app():
         openapi_url="/api/docs.json",
         default_response_class=ORJSONResponse,
         debug=settings.debug,
+    )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
     init_containers(fastapi_app)
     include_routers(fastapi_app)
