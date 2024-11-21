@@ -7,8 +7,8 @@ from app.api.chat import chat_router
 from app.core.config import settings
 from app.dependencies.containers import Container
 
-ROUTES = ["app.api.chat"]
-ROUTERS = [chat_router]
+ROUTES = ("app.api.chat",)
+ROUTERS = (chat_router,)
 
 
 def init_containers(fastapi_app: FastAPI):
