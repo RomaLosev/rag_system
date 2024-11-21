@@ -36,7 +36,7 @@ async def chat_with_gemma(
         await ws_chat.chat()
 
 
-@chat_router.post("")
+@chat_router.post("/query")
 @inject
 async def get_answer(
     request: ChatRequest,
