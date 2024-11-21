@@ -26,7 +26,8 @@ re_write_prompt = PromptTemplate(
 )
 
 check_question_prompt = PromptTemplate(
-    template="""You are a classifier that determines whether a user's question requires complex reasoning and additional data retrieval or can be answered directly without external resources. 
+    template="""You are a classifier that determines whether a user's question requires complex reasoning and additional data retrieval or can be answered directly without external resources.
+        Сlassify any message containing a question as '"complex"' 
         Here is the user's question: {question}
     
         If the question is simple (e.g., a general or straightforward fact), respond with a JSON containing a single key `"complexity"` with the value `"simple"`.
