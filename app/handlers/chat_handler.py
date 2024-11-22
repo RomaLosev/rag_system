@@ -26,6 +26,6 @@ class ChatRagStreamingHandler:
     def __init__(self, chat_model: RagModel):
         self.bot = chat_model
 
-    async def get_answer(self, message: str):
+    async def get_stream_answer(self, message: str):
         async for chunk in self.bot.get_stream_response(message):
             yield chunk

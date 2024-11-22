@@ -65,5 +65,5 @@ class VectorStore:
     async def vector_search(self, message: str) -> list[Document]:
         embedding = await self.create_embeddings(message)
         return await self.vector_store.amax_marginal_relevance_search_by_vector(
-            embedding=embedding
+            embedding=embedding, k=6
         )

@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import ORJSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import ORJSONResponse
 from loguru import logger
 
 from app.api.chat import chat_router

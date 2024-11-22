@@ -44,7 +44,7 @@ async def get_answer(
 ):
     async def generate_response():
         handler = ChatRagStreamingHandler(chat_model=llm)
-        async for chunk in handler.get_answer(message=request.query):
+        async for chunk in handler.get_stream_answer(message=request.query):
             yield chunk
 
     return StreamingResponse(generate_response())

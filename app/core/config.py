@@ -16,10 +16,12 @@ class AppSettings(BaseSettings):
     debug: bool = Field(default=True)
     azure_docs_loader_key: str = Field(default=...)
     azure_docs_loader_endpoint: str = Field(default=...)
-    azure_openai_endpoint: AnyHttpUrl = Field(default=...)
-    azure_openai_api_key: str = Field(default=...)
-    azure_openai_api_version: str = Field(default="2024-08-01-preview")
-    ollama_base_url: AnyHttpUrl = Field(default="http://192.168.31.192:11434")
+    ollama_base_url: AnyHttpUrl = Field(
+        default="http://192.168.31.192:11434", description="local ollama for dev"
+    )
+    gemma_base_url: AnyHttpUrl = Field(default=..., description="Cloud model on GPU")
+    gemma_api_key: str = Field(default=...)
+    openai_api_key: str = Field(default=..., description="For embeddings")
 
     @field_validator("docs_path", mode="before")
     def validate_and_create_directory(cls, value):  # noqa:N805
