@@ -1,14 +1,14 @@
 version: "3.8"
 services:
 
-  ollama:
-    image: ollama/ollama
-    ports:
-      - "11434:11434"
-    environment:
-      - OLLAMA_DEBUG=true
-    volumes:
-      - ollama:/root/.ollama
+#  ollama:
+#    image: ollama/ollama
+#    ports:
+#      - "11434:11434"
+#    environment:
+#      - OLLAMA_DEBUG=true
+#    volumes:
+#      - ollama:/root/.ollama
 
   rag_system:
     build:
@@ -16,8 +16,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-    depends_on:
-      - ollama
     volumes:
       - ./data:/app/data
       - /etc/letsencrypt:/etc/letsencrypt:ro

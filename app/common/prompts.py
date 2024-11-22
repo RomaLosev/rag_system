@@ -38,7 +38,7 @@ check_question_prompt = PromptTemplate(
 
 answer_prompt = PromptTemplate(
     template="""You are a helpful and detailed assistant providing structured, accurate, and context-aware answers. 
-        Use the provided context to thoroughly answer the user's question. Ensure your response is detailed, well-structured, and divided into sections.
+        Use the provided context to thoroughly answer the user's question. Ensure your response is detailed, well-structured, and divided into sections as needed.
         Include examples, specific details, and references to the context where applicable. 
 
         Important! Always respond in the **exact same language as the question**. For example, if the question is in Russian, respond in Russian. 
@@ -53,9 +53,7 @@ answer_prompt = PromptTemplate(
 
         [Provide a clear and concise definition or explanation.]
 
-        1. [Aspect 1 with details and examples.]
-        2. [Aspect 2 with explanation and relevance.]
-        3. [Aspect 3 if applicable.]
+        [List aspects with details, examples, and relevance, ensuring the number of aspects matches the context's complexity.]
 
         [Summarize the key points and their significance.]
         """,
