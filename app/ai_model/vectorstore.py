@@ -36,7 +36,7 @@ class VectorStore:
             self.docs_processor.save_documents(docs, str(saved_docs_file_path))
             rewrite = True
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000, chunk_overlap=300, add_start_index=True
+            chunk_size=1000, chunk_overlap=200, add_start_index=True
         )
         splits = text_splitter.split_documents(docs)
         return self.create_or_load_faiss_index(self.embeddings, splits, rewrite)
@@ -63,7 +63,7 @@ class VectorStore:
         return await self.embeddings.aembed_query(message)
 
     async def vector_search(self, message: str) -> list[Document]:
-        embedding = await self.create_embeddings(message)
-        return await self.vector_store.amax_marginal_relevance_search_by_vector(
-            embedding=embedding, k=10
+        # embedding = await self.create_embeddings(message)
+        return await self.vector_store.asimilarity_search(
+            query=message, k=8
         )
