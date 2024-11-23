@@ -20,7 +20,7 @@ re_write_prompt = PromptTemplate(
         Here is the initial question:
         {question}
         
-        Improved question with no preamble:
+        Only Improved question with no preamble and no explanations:
         """,
     input_variables=["question"],
 )
