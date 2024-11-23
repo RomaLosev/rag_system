@@ -22,6 +22,7 @@ class Container(containers.DeclarativeContainer):
         base_url=str(settings.gemma_base_url),
         api_key=settings.gemma_api_key,
         stream_usage=True,
+        temperature=0.8,
     )
     embeddings_openai = providers.Singleton(
         OpenAIEmbeddings,

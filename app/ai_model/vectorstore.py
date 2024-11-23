@@ -36,7 +36,7 @@ class VectorStore:
             self.docs_processor.save_documents(docs, str(saved_docs_file_path))
             rewrite = True
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000, chunk_overlap=200, add_start_index=True
+            chunk_size=1000, chunk_overlap=300, add_start_index=True
         )
         splits = text_splitter.split_documents(docs)
         return self.create_or_load_faiss_index(self.embeddings, splits, rewrite)

@@ -1,3 +1,4 @@
+import os
 from collections.abc import Generator
 from pathlib import Path
 
@@ -42,6 +43,40 @@ def split_docx(
             part_text = []
             part_num += 1
             yield Path(part_output_path)
+
+
+def split_docx_by_size_generator(
+    file_path: Path, output_path: Path, max_size_mb: int
+) -> Generator[Path]:
+    """
+    split .docx document by size
+    """
+    max_size_bytes = max_size_mb * 1024 * 1024
+    input_file = Path(file_path)
+    if not input_file.exists():
+        msg = f"Файл {file_path} не найден."
+        raise FileNotFoundError(msg)
+    if not str(file_path).endswith(".docx"):
+        msg = f"Файл {file_path} должен быть формата .docx."
+        raise ValueError(msg)
+    output_path.mkdir(parents=True, exist_ok=True)
+    doc = Document(str(file_path))
+    part_num = 1
+    part_doc = Document()
+    for paragraph in doc.paragraphs:
+        part_doc.add_paragraph(paragraph.text, style=paragraph.style)
+        temp_path = output_path / "temp_part.docx"
+        part_doc.save(str(temp_path))
+        if os.path.getsize(temp_path) >= max_size_bytes:
+            part_file_path = output_path / f"part_{part_num}.docx"
+            part_doc.save(str(part_file_path))
+            yield Path(part_file_path)
+            part_doc = Document()
+            part_num += 1
+    if part_doc.paragraphs:
+        part_file_path = output_path / f"part_{part_num}.docx"
+        part_doc.save(str(part_file_path))
+        yield part_file_path
 
 
 def split_xlsx(file_path: Path, output_dir: Path) -> Generator[Path]:

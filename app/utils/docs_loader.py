@@ -1,4 +1,5 @@
 import json
+import shutil
 from pathlib import Path
 
 from langchain_community.document_loaders import AzureAIDocumentIntelligenceLoader
@@ -7,7 +8,7 @@ from loguru import logger
 
 from app.common.exceptions import UnsupportedFileError
 from app.core.config import settings
-from app.utils.docs_splitter import split_docx, split_xlsx
+from app.utils.docs_splitter import split_docx_by_size_generator, split_xlsx
 
 
 class MicrosoftDocumentsLoader:
@@ -46,18 +47,23 @@ class MicrosoftDocumentsLoader:
         )
         return loader.load()
 
+    @staticmethod
+    def delete_folder(folder_path: Path):
+        if folder_path.exists() and folder_path.is_dir():
+            shutil.rmtree(folder_path)
+
     def load_document_docx(self, file_path: Path) -> list[Document]:
         document = []
         output_path = Path("./temp_files_dir")
-        for file_part in split_docx(file_path, output_path, max_paragraphs=100):
+        for file_part in split_docx_by_size_generator(
+            file_path, output_path, max_size_mb=3
+        ):
             try:
                 doc_part = self.load_documents(file_part)
                 document.extend(doc_part)
             except Exception as ex:
                 logger.error(f"Can not load document {file_path}: {ex}")
-            finally:
-                file_part.unlink(missing_ok=True)
-        output_path.rmdir()
+        self.delete_folder(output_path)
         return document
 
     def load_document_xlsx(self, file_path: Path) -> list[Document]:
