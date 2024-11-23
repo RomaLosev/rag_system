@@ -29,6 +29,7 @@ class RagModel:
             yield ""
             return
         rewritten_question = await self.rewrite_question(message)
+        logger.debug("Rewritten question: {}", rewritten_question)
         context = await self.search_vectorstore(rewritten_question)
         async for chunk in self.generate_answer_streaming(message, context):
             yield chunk

@@ -47,4 +47,4 @@ async def get_answer(
         async for chunk in handler.get_stream_answer(message=request.query):
             yield chunk
 
-    return StreamingResponse(generate_response())
+    return StreamingResponse(generate_response(), media_type="text/event-stream")

@@ -63,7 +63,7 @@ class VectorStore:
         return await self.embeddings.aembed_query(message)
 
     async def vector_search(self, message: str) -> list[Document]:
-        # embedding = await self.create_embeddings(message)
-        return await self.vector_store.asimilarity_search(
-            query=message, k=8
+        embedding = await self.create_embeddings(message)
+        return await self.vector_store.asimilarity_search_by_vector(
+            embedding=embedding, k=8
         )
